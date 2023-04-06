@@ -6,6 +6,11 @@ const config = require('./config.json'),
 
 module.exports = function SkillResets(mod) {
 
+    let enabled = true;
+    mod.command.add("skillresets", ()=>{
+        enabled = !enabled;
+        mod.command.message(`Mod is now : ${enabled?"enabled":"disabled"}`);
+    })
     const succesiveSkillResets = new Map()
     const skillResetsLog = new Map()
 
@@ -15,6 +20,7 @@ module.exports = function SkillResets(mod) {
 
     mod.hook('S_CREST_MESSAGE', 2, ({ type, skill }) => {
         if (type !== 6 || skill === undefined || blacklist.includes(skill)) return
+        if(!enabled) return;
 		
 		if(haymaker.includes(skill)) skill = 60901
 
